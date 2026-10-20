@@ -1,9 +1,16 @@
 Summary: A remote mail retrieval and forwarding utility
 Name: fetchmail
 Version: 6.4.38
-Release: 3%{?dist}
+Release: 3%{?dist}.1
 Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 Source1: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.xz.asc
+# Fix CVE-2026-94184: stack-based buffer overflow in NTLM authentication
+# (fetchmail-SA-2026-01)
+# Backport of upstream cb5be5c3 (bounds check in AddBytes), ddf19ffa (cast
+# count to size_t) and the buffer-full parts of 09f95921 (propagate failure
+# to the caller, without which the truncated response leaks uninitialized
+# stack to the server). Upstream shipped all three in 6.6.7.
+Patch0: fetchmail-6.4.38-CVE-2026-94184.patch
 URL: http://www.fetchmail.info/
 # For a breakdown of the licensing, see COPYING
 License: GPL-2.0-or-later AND LicenseRef-Fedora-Public-Domain
@@ -22,7 +29,7 @@ Install fetchmail if you need to retrieve mail over SLIP or PPP
 connections.
 
 %prep
-%setup -q
+%autosetup -p1
 
 %build
 %configure --enable-POP3 --enable-IMAP --with-ssl --without-hesiod \
@@ -48,6 +55,11 @@ rm -f $RPM_BUILD_ROOT%{python3_sitelib}/__pycache__/fetchmailconf*
 %{_mandir}/man1/fetchmail.1*
 
 %changelog
+* Tue Oct 06 2026 Vitezslav Crhonek <vcrhonek@redhat.com> - 6.4.38-3.1
+- Fix CVE-2026-94184: stack-based buffer overflow in NTLM authentication
+  (fetchmail-SA-2026-01)
+  Resolves: RHEL-265187
+
 * Tue Oct 29 2024 Troy Dawson <tdawson@redhat.com> - 6.4.38-3
 - Bump release for October 2024 mass rebuild:
   Resolves: RHEL-64018

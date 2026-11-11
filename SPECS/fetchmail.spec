@@ -72,7 +72,7 @@ rm -f $RPM_BUILD_ROOT%{python3_sitelib}/__pycache__/fetchmailconf*
 * Tue Oct 06 2026 Vitezslav Crhonek <vcrhonek@redhat.com> - 6.4.24-1.1
 - Fix CVE-2026-94184: stack-based buffer overflow in NTLM authentication
   (fetchmail-SA-2026-01)
-  Resolves: RHEL-265195
+  Resolves: RHEL-265196
 
 * Mon Jan 10 2022 Vitezslav Crhonek <vcrhonek@redhat.com> - 6.4.24-1
 - Update to fetchmail-6.4.24 (fixes CVE-2021-36386 and CVE-2021-39272)
